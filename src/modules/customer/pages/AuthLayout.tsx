@@ -1,21 +1,32 @@
 import React, { useState } from "react";
 import Login from "../components/form/Login";
 import Register from "../components/form/Register";
-import type{ AuthView } from "../types/Auth";
-import Authimg from"../../../assets/Images/Auth.jpg"
+import type { AuthView } from "../types/Auth";
+import Authimg from "../../../assets/Images/Auth.jpg";
 
-// ─── Image config — replace these URLs with your own ─────────────────────────
+const SIDE_IMAGE_URL = Authimg;
 
-/**
- * Replace the URL below with your perfume image.
- * Recommended: a high-quality vertical/portrait shot of a bottle.
- * Suggested dimensions: 600×900px or similar portrait ratio.
- */
-const SIDE_IMAGE_URL =Authimg
-  
-// ^ Placeholder — swap this URL with your preferred perfume image
+// ─── Animation styles ─────────────────────────────────────────────────────────
 
-// ─── VYRA Logo SVG ────────────────────────────────────────────────────────────
+const panelAnim = {
+  image: {
+    animation: "vyra-slide-left 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+  } as React.CSSProperties,
+
+  form: {
+    animation: "vyra-slide-right 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both",
+  } as React.CSSProperties,
+
+  logo: {
+    animation: "vyra-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.40s both",
+  } as React.CSSProperties,
+
+  quote: {
+    animation: "vyra-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both",
+  } as React.CSSProperties,
+};
+
+// ─── VYRA Logo ────────────────────────────────────────────────────────────────
 
 const VyraLogo: React.FC<{ size?: "sm" | "md" }> = ({ size = "md" }) => (
   <div className={size === "md" ? "mb-1" : ""}>
@@ -69,20 +80,20 @@ const AuthLayout: React.FC = () => {
       </div>
 
       {/* ── Left image panel ── */}
-      <div className="hidden lg:flex flex-col w-[42%] relative overflow-hidden flex-shrink-0">
-        {/* Image */}
+      <div
+        style={panelAnim.image}
+        className="hidden lg:flex flex-col w-[42%] relative overflow-hidden flex-shrink-0"
+      >
         <img
           src={SIDE_IMAGE_URL}
           alt="VYRA Fragrance"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#1a0d24]/60 via-transparent to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d24]/80 via-transparent to-[#1a0d24]/30" />
 
-        {/* Brand overlay on image */}
         <div className="relative z-10 flex flex-col justify-between h-full p-10">
-          <div>
+          <div style={panelAnim.logo}>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-5 h-px bg-[#c8a8d8]" />
               <span className="text-[8px] tracking-[0.45em] text-[#c8a8d8]/70 uppercase">
@@ -92,9 +103,12 @@ const AuthLayout: React.FC = () => {
             <VyraLogo size="md" />
           </div>
 
-          <div className="mb-4">
+          <div style={panelAnim.quote} className="mb-4">
             <div className="w-7 h-px bg-[#c8a8d8]/40 mb-4" />
-            <p className="text-[#c8a8d8]/60 text-[11px] font-light tracking-[0.15em] leading-loose italic" style={{ fontFamily: "Georgia, serif" }}>
+            <p
+              className="text-[#c8a8d8]/60 text-[11px] font-light tracking-[0.15em] leading-loose italic"
+              style={{ fontFamily: "Georgia, serif" }}
+            >
               "Crafted for scent lovers<br />
               who collect stories,<br />
               not just bottles."
@@ -104,8 +118,10 @@ const AuthLayout: React.FC = () => {
       </div>
 
       {/* ── Right form panel ── */}
-      <div className="flex-1 flex flex-col justify-center items-center px-6 py-8 lg:px-12">
-        {/* Mobile brand */}
+      <div
+        style={panelAnim.form}
+        className="flex-1 flex flex-col justify-center items-center px-6 py-8 lg:px-12"
+      >
         <div className="lg:hidden text-center mb-6">
           <VyraLogo size="sm" />
         </div>
@@ -119,9 +135,9 @@ const AuthLayout: React.FC = () => {
                 type="button"
                 onClick={() => switchView(tab)}
                 className={`
-                  relative flex-1 pb-3 text-[9px] tracking-[0.3em] uppercase transition-all duration-300
+                  relative flex-1 pb-3 text-[12px] tracking-[0.3em] uppercase transition-all duration-300
                   font-sans
-                  ${view === tab ? "text-[#c8a8d8]" : "text-[#3a2249] hover:text-[#6b4f7a]"}
+                  ${view === tab ? "text-[#c8a8d8]" : "text-[#c78bed] hover:text-[#6b4f7a]"}
                 `}
               >
                 {tab === "login" ? "Sign In" : "Register"}
@@ -146,7 +162,7 @@ const AuthLayout: React.FC = () => {
           </div>
 
           {/* ── Switch prompt ── */}
-          <p className="mt-5 text-center text-[8px] tracking-widest uppercase text-[#3a2249] font-sans">
+          <p className="mt-5 text-center text-[9px] tracking-widest uppercase text-[#ca97e9] font-sans">
             {view === "login" ? (
               <>
                 New to VYRA?{" "}

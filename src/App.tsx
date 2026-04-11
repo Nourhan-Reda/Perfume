@@ -1,9 +1,11 @@
-import AuthLayout from "./modules/customer/pages/AuthLayout";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
 	return (
 		<>
-			<AuthLayout />
+			<main>
+				<Outlet />
+			</main>
 		</>
 	);
 };
