@@ -1,3 +1,5 @@
+import SearchBar from "./SearchBar";
+
 type NavItem = {
   label: string;
   href: string;
@@ -24,14 +26,14 @@ export default function Navbar({
   cartCount = 2,
   logoText = "V",
 }: NavbarProps) {
-  // Prevent unused variable build errors (ESLint / CI)
   void cartCount;
 
   return (
     <header className="w-full bg-white shadow-[0_12px_30px_rgba(24,16,32,0.08)]">
+      {/* TOP BAR */}
       <div className="bg-[#4b2a53] text-white">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between px-4 py-2 text-xs uppercase tracking-[0.2em] sm:px-6 lg:px-10">
-          <div className="flex items-center gap-5 text-[11px] font-semibold tracking-[0.25em] text-white/90">
+          <div className="text-[11px] font-semibold tracking-[0.25em] text-white/90">
             Bespoke fragrance consultations
           </div>
 
@@ -46,9 +48,10 @@ export default function Navbar({
         </div>
       </div>
 
+      {/* MAIN */}
       <div className="mx-auto flex max-w-[1200px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-10">
         <div className="grid gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
-          {/* Brand */}
+          {/* BRAND */}
           <div className="flex items-center gap-4">
             <div className="relative grid h-12 w-12 place-items-center rounded-[18px] border border-[#4b2a53]/20 bg-white text-sm font-semibold tracking-[0.32em] text-[#4b2a53] shadow-[0_10px_24px_rgba(75,42,83,0.2)]">
               <span
@@ -69,58 +72,36 @@ export default function Navbar({
               >
                 {brand}
               </a>
+
               <p className="text-[11px] uppercase tracking-[0.3em] text-[#4b2a53]/60">
                 {tagLine}
               </p>
             </div>
           </div>
 
-          {/* Search */}
-          <label className="flex w-full max-w-[720px] items-center gap-3 rounded-full border border-[#e6dfe7] bg-white px-6 py-3.5 text-sm text-[#4b2a53] shadow-[0_10px_22px_rgba(75,42,83,0.08)] lg:mx-auto">
-            <input
-              type="search"
-              placeholder="Hey, what are you looking for?"
-              className="w-full bg-transparent text-sm text-[#4b2a53] outline-none placeholder:text-[#4b2a53]/40"
-            />
-            <span className="text-base">⌕</span>
-          </label>
+          {/* SEARCH COMPONENT */}
+          <SearchBar />
 
-          {/* Actions */}
+          {/* ACTIONS */}
           <div className="flex items-center gap-6 text-sm text-[#4b2a53] lg:justify-self-end">
-            <button
-              type="button"
-              className="grid h-10 w-10 place-items-center"
-              aria-label="My account"
-            >
+            <button type="button" aria-label="My account">
               <svg
                 className="h-5 w-5 text-[#2f1d17]"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
               >
                 <path d="M20 21a8 8 0 0 0-16 0" />
                 <circle cx="12" cy="8" r="4" />
               </svg>
             </button>
 
-            <button
-              type="button"
-              className="grid h-10 w-10 place-items-center"
-              aria-label="Wishlist"
-            >
+            <button type="button" aria-label="Wishlist">
               <svg
                 className="h-5 w-5 text-[#2f1d17]"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
               >
                 <path d="M20.8 6.8a4.8 4.8 0 0 0-6.8 0L12 8.8l-2-2a4.8 4.8 0 0 0-6.8 6.8l8.8 8.8 8.8-8.8a4.8 4.8 0 0 0 0-6.8Z" />
               </svg>
@@ -136,10 +117,6 @@ export default function Navbar({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
               >
                 <path d="M6 8h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z" />
                 <path d="M9 8V6a3 3 0 0 1 6 0v2" />
@@ -148,7 +125,7 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* NAVIGATION */}
         <nav className="flex flex-wrap items-center justify-center gap-12 text-[13px] font-semibold uppercase tracking-[0.35em] text-[#3a293f]">
           {navItems.map((item) => (
             <a

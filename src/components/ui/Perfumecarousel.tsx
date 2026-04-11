@@ -1,311 +1,275 @@
 import { useState, useEffect, useCallback } from "react";
 
-const items = [
+type Product = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  price: number;
+  category: string;
+  rating: number;
+};
+
+const API_DATA: Product[] = [
   {
-    name: "Velvet Noir",
-    tagline: "Midnight mystery in every drop",
-    notes: ["Black Oud", "Dark Rose", "Amber Musk"],
-    price: "$189",
-    accent: "#c4a2e7",
-    glow: "rgba(191, 129, 183, 0.35)",
-    img: "https://images.unsplash.com/photo-1541643600914-78b084683702?w=600&q=80",
+    id: "1",
+    title: "Floral Rose Essence",
+    description: "Soft feminine fragrance with romantic floral fresh notes",
+    image:
+      "https://i.pinimg.com/736x/21/4c/d3/214cd3f69b77db896ad01de2aa171367.jpg",
+    price: 350,
+    category: "women",
+    rating: 4.5,
   },
   {
-    name: "Aura Lumière",
-    tagline: "Radiance woven into silk",
-    notes: ["Iris Blanche", "Violet Petal", "Sandalwood"],
-    price: "$245",
-    accent: "#9d5ea65b",
-    glow: "rgba(232,121,249,0.35)",
-    img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&q=80",
+    id: "2",
+    title: "Sweet Vanilla Bloom",
+    description: "Warm sweet scent with creamy vanilla soft touch",
+    image:
+      "https://i.pinimg.com/736x/fd/1a/a7/fd1aa7d65ac9efcb945237c21e81dc03.jpg",
+    price: 300,
+    category: "women",
+    rating: 4.3,
   },
   {
-    name: "Soir Enchanté",
-    tagline: "The hour before midnight",
-    notes: ["Bergamot", "Plum Noir", "Vetiver"],
-    price: "$210",
-    accent: "#a080ae",
-    glow: "rgba(221, 145, 223, 0.35)",
-    img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=600&q=80",
+    id: "3",
+    title: "Elegant Jasmine Mist",
+    description: "Fresh jasmine aroma giving elegant feminine daily fragrance",
+    image:
+      "https://i.pinimg.com/1200x/ec/91/66/ec9166e5be6603e660550a25d6eb9fdf.jpg",
+    price: 320,
+    category: "women",
+    rating: 4.4,
   },
 ];
 
 export default function PerfumeCarousel() {
+  const items = API_DATA;
   const [idx, setIdx] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [dir, setDir] = useState<1 | -1>(1);
+
   const p = items[idx];
 
   const goTo = useCallback(
     (next: number, direction: 1 | -1) => {
-      if (animating) return;
+      if (animating || next === idx) return;
       setDir(direction);
       setAnimating(true);
       setTimeout(() => {
         setIdx(next);
         setAnimating(false);
-      }, 420);
+      }, 500); // Slightly slower for luxury feel
     },
-    [animating],
+    [animating, idx],
   );
 
   useEffect(() => {
-    const t = setInterval(() => goTo((idx + 1) % 3, 1), 5000);
+    const t = setInterval(() => {
+      goTo((idx + 1) % items.length, 1);
+    }, 6000);
     return () => clearInterval(t);
-  }, [idx, goTo]);
+  }, [idx, items.length, goTo]);
 
-  const slide = (axis: 1 | -1): React.CSSProperties => ({
+  if (!p) return null;
+
+  const accent = "#4b2a53";
+  const textPrimary = "#1a1a1a";
+  const textSecondary = "#665d69";
+
+  // Refined Animation Logic
+  const contentSlide: React.CSSProperties = {
     opacity: animating ? 0 : 1,
-    transform: animating ? `translateX(${dir * axis * 22}px)` : "translateX(0)",
-    transition: "opacity 0.38s ease, transform 0.38s ease",
-  });
+    transform: animating ? `translateY(${dir * 15}px)` : "translateY(0)",
+    transition: "all 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
+  };
 
-  const arrowBtn = (hoverAccent: string): React.CSSProperties => ({
-    width: 44,
-    height: 44,
-    borderRadius: "50%",
-    border: "1px solid rgba(255,255,255,0.15)",
-    background: "rgba(255,255,255,0.04)",
-    color: "rgba(255,255,255,0.5)",
-    fontSize: 16,
-    cursor: "pointer",
-    transition: "all 0.2s",
-  });
+  const imageEffect: React.CSSProperties = {
+    opacity: animating ? 0.8 : 1,
+    transform: animating ? "scale(1.05)" : "scale(1)",
+    transition: "all 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
+  };
 
   return (
     <div
       style={{
-        fontFamily: "Georgia,serif",
-        background:
-          "radial-gradient(ellipse at 50% 0%,#1a0533,#0a0014 60%,#000)",
+        fontFamily: "'Didot', 'Playfair Display', serif",
+        background: "#ffffff",
         width: "100%",
+        minHeight: "600px",
         position: "relative",
         overflow: "hidden",
-        padding: "64px 80px 80px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "80px 40px",
       }}
     >
+      {/* Sophisticated Background Element */}
       <div
         style={{
           position: "absolute",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          background: `radial-gradient(circle,${p.glow},transparent 70%)`,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%,-55%)",
-          pointerEvents: "none",
-          transition: "background 0.8s",
+          top: 0,
+          right: 0,
+          width: "40%",
+          height: "100%",
+          background: "linear-gradient(to left, #faf7fb, transparent)",
+          zIndex: 0,
         }}
       />
 
       <div
         style={{
           position: "relative",
-          width: "100%",
+          zIndex: 1,
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: 80,
+          gap: 100,
+          maxWidth: 1100,
           alignItems: "center",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 24,
-          }}
-        >
+        {/* LEFT: IMAGE SECTION */}
+        <div style={{ position: "relative" }}>
           <div
             style={{
               width: "100%",
-              maxWidth: 420,
-              height: 480,
-              borderRadius: 18,
+              aspectRatio: "4/5",
+              borderRadius: "2px", // Luxury often uses sharp or very slight radii
               overflow: "hidden",
-              border: `1px solid ${p.accent}44`,
-              boxShadow: `0 0 48px ${p.glow}`,
-              ...slide(-1),
+              boxShadow: "0 30px 60px -12px rgba(50, 50, 93, 0.15)",
+              backgroundColor: "#f6f6f6",
+              ...imageEffect,
             }}
           >
             <img
-              src={p.img}
-              alt={p.name}
+              src={p.image}
+              alt={p.title}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           </div>
-          <div style={{ display: "flex", gap: 10 }}>
+
+          {/* Minimalist Pagination dots */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 12,
+              marginTop: 32,
+            }}
+          >
             {items.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i, i > idx ? 1 : -1)}
                 style={{
-                  width: i === idx ? 32 : 10,
-                  height: 10,
-                  borderRadius: 5,
-                  border: "none",
-                  background: i === idx ? p.accent : "rgba(255,255,255,0.2)",
-                  cursor: "pointer",
+                  width: i === idx ? 40 : 8,
+                  height: 2,
                   padding: 0,
-                  transition: "all 0.3s",
+                  border: "none",
+                  background: i === idx ? accent : "#d1d1d1",
+                  cursor: "pointer",
+                  transition: "all 0.4s ease",
                 }}
               />
             ))}
           </div>
         </div>
 
-        <div
-          style={{
-            color: "#fff",
-            display: "flex",
-            flexDirection: "column",
-            gap: 24,
-            ...slide(1),
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              letterSpacing: 4,
-              textTransform: "uppercase" as const,
-              color: p.accent,
-            }}
-          >
-            Parfum · Édition Limitée
-          </span>
-          <div>
-            <h2
-              style={{
-                margin: 0,
-                fontSize: 52,
-                fontWeight: 400,
-                lineHeight: 1.05,
-              }}
-            >
-              {p.name}
-            </h2>
-            <p
-              style={{
-                margin: "10px 0 0",
-                fontSize: 15,
-                color: "rgba(255,255,255,0.45)",
-                fontStyle: "italic",
-              }}
-            >
-              {p.tagline}
-            </p>
-          </div>
-          <div
-            style={{
-              height: 1,
-              background: `linear-gradient(to right,${p.accent}66,transparent)`,
-            }}
-          />
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <p
-              style={{
-                margin: "0 0 6px",
-                fontSize: 10,
-                letterSpacing: 3,
-                textTransform: "uppercase" as const,
-                color: "rgba(255,255,255,0.3)",
-              }}
-            >
-              Fragrance Notes
-            </p>
-            {p.notes.map((n, i) => (
-              <div
-                key={i}
-                style={{ display: "flex", alignItems: "center", gap: 12 }}
-              >
-                <div
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: p.accent,
-                    opacity: 1 - i * 0.25,
-                    flexShrink: 0,
-                  }}
-                />
-                <span style={{ fontSize: 16, color: "rgba(255,255,255,0.7)" }}>
-                  {n}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 20,
-              marginTop: 8,
-            }}
-          >
-            <span style={{ fontSize: 40, fontWeight: 300, color: p.accent }}>
-              {p.price}
-            </span>
-            <button
-              style={{
-                flex: 1,
-                maxWidth: 260,
-                padding: "16px 0",
-                borderRadius: 12,
-                border: `1px solid ${p.accent}`,
-                background: `${p.accent}18`,
-                color: "#fff",
-                fontSize: 12,
-                letterSpacing: 3,
-                textTransform: "uppercase" as const,
-                cursor: "pointer",
-                fontFamily: "Georgia,serif",
-                transition: "background 0.3s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = `${p.accent}44`)
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = `${p.accent}18`)
-              }
-            >
-              Add to Cart
-            </button>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginTop: 8,
-            }}
-          >
-            {([-1, 1] as const).map((d, i) => (
-              <button
-                key={i}
-                onClick={() => goTo((idx + d + 3) % 3, d)}
-                style={arrowBtn(p.accent)}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = p.accent;
-                  e.currentTarget.style.color = p.accent;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-                  e.currentTarget.style.color = "rgba(255,255,255,0.5)";
-                }}
-              >
-                {d === -1 ? "←" : "→"}
-              </button>
-            ))}
+        {/* RIGHT: CONTENT SECTION */}
+        <div style={contentSlide}>
+          <div style={{ marginBottom: 24 }}>
             <span
               style={{
                 fontSize: 12,
-                color: "rgba(255,255,255,0.25)",
-                letterSpacing: 2,
+                letterSpacing: 6,
+                textTransform: "uppercase",
+                color: accent,
+                fontWeight: 600,
+                display: "block",
+                marginBottom: 16,
               }}
             >
-              {String(idx + 1).padStart(2, "0")} / 03
+              The {p.category} Series
             </span>
+            <h2
+              style={{
+                fontSize: 64,
+                lineHeight: 1.1,
+                margin: "0 0 24px 0",
+                color: textPrimary,
+                fontWeight: 400,
+              }}
+            >
+              {p.title}
+            </h2>
+            <p
+              style={{
+                fontSize: 18,
+                lineHeight: 1.6,
+                color: textSecondary,
+                maxWidth: 400,
+                fontFamily: "sans-serif",
+                fontWeight: 300,
+              }}
+            >
+              {p.description}
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: 16,
+              marginBottom: 40,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 32,
+                color: textPrimary,
+                fontWeight: 400,
+              }}
+            >
+              ${p.price}.00
+            </span>
+            <span
+              style={{
+                fontSize: 14,
+                color: textSecondary,
+                textDecoration: "overline",
+                letterSpacing: 1,
+              }}
+            >
+              Free Delivery
+            </span>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            <button
+              style={{
+                padding: "18px 48px",
+                backgroundColor: accent,
+                color: "white",
+                border: "none",
+                fontSize: 14,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                cursor: "pointer",
+                transition: "opacity 0.2s",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
+              onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              Experience Now
+            </button>
+
+            <div
+              style={{ fontSize: 13, color: textSecondary, letterSpacing: 1 }}
+            >
+              {String(idx + 1).padStart(2, "0")} / {items.length}
+            </div>
           </div>
         </div>
       </div>
