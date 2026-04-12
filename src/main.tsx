@@ -1,11 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { HomePage } from './modules/customer/pages/HomePage.tsx';
-import AuthLayout from './modules/customer/pages/AuthLayout.tsx';
-import { Navigate } from 'react-router-dom';
-import App from './App.tsx';
+
+import "./index.css";
+import App from "./App.tsx";
+
+import { HomePage } from "./modules/customer/pages/HomePage.tsx";
+import AuthLayout from "./modules/customer/pages/AuthLayout.tsx";
+import { Navigate } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
@@ -14,17 +16,22 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/auth" replace />
+        element: <Navigate to="/auth" replace />,
       },
-      { path: "auth", element: <AuthLayout /> },
-      { path: "/home", element: <HomePage /> }
-    ]
-
+      {
+        path: "auth",
+        element: <AuthLayout />,
+      },
+      {
+        path: "home",
+        element: <HomePage />,
+      },
+    ],
   },
 ]);
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
