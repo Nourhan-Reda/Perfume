@@ -55,7 +55,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
 
       saveUserSession(user);
       onSuccess?.();
-      navigate("/home");
+      navigate("/");
     } catch {
       setAuthError("Something went wrong. Please try again.");
     } finally {

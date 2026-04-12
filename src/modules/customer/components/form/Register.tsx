@@ -62,7 +62,7 @@ const Register: React.FC<RegisterProps> = ({ onSuccess }) => {
 
       saveUserSession(user);
       onSuccess?.();
-      navigate("/home");
+      navigate("/");
     } catch {
       setAuthError("Registration failed. Please try again.");
     } finally {
