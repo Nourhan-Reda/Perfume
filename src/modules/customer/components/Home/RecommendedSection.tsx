@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 type Product = {
   id: string;
-  name: string;
+  title: string;
   price: string;
   image: string;
   category: string;
@@ -11,7 +11,7 @@ type Product = {
 
 type ApiProduct = {
   id: string;
-  name?: string;
+  title: string;
   price?: string | number;
   image?: string;
   category?: string;
@@ -41,16 +41,16 @@ export default function RecommendedForYou() {
 
         const formatted: Product[] = (data as ApiProduct[]).map((item) => ({
           id: item.id,
-          name: item.name ?? "Unknown Perfume",
+          title: item.title ?? "Unknown Perfume",
           price: `$${item.price ?? 0}`,
           image: item.image ?? "",
           category: (item.category ?? "other").toLowerCase().trim(),
         }));
 
-        const women = formatted.filter((p) => p.category.includes("women"));
-        const men = formatted.filter((p) => p.category.includes("men"));
+        const women = formatted.filter((p) => p.category===("women"));
+        const men = formatted.filter((p) => p.category===("men"));
         const children = formatted.filter((p) =>
-          p.category.includes("children"),
+          p.category===("children"),
         );
 
         const selected: Product[] = [];
@@ -113,7 +113,7 @@ export default function RecommendedForYou() {
                       product.image ||
                       "https://via.placeholder.com/300x400?text=Perfume"
                     }
-                    alt={product.name}
+                    alt={product.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
@@ -125,7 +125,7 @@ export default function RecommendedForYou() {
                 {/* INFO */}
                 <div className="p-4 text-center">
                   <h3 className="text-sm tracking-[0.2em] uppercase">
-                    {product.name}
+                    {product.title}
                   </h3>
 
                   <p className="text-[#2f1d17]/50 text-xs mt-2 tracking-[0.15em] uppercase">
