@@ -18,6 +18,7 @@ const DEFAULT_ITEMS: NavItem[] = [
   { label: "Men", href: "#men" },
   { label: "Women", href: "#women" },
   { label: "Children", href: "#children" },
+  { label: "Blog", href: "/blog" }, // ✅ ONLY ADDITION
 ];
 
 export default function Navbar({
@@ -28,7 +29,9 @@ export default function Navbar({
   logoText = "V",
 }: NavbarProps) {
   void cartCount;
-const navigate=useNavigate();
+
+  const navigate = useNavigate();
+
   return (
     <header className="w-full bg-white shadow-[0_12px_30px_rgba(24,16,32,0.08)]">
       {/* TOP BAR */}
@@ -55,14 +58,8 @@ const navigate=useNavigate();
           {/* BRAND */}
           <div className="flex items-center gap-4">
             <div className="relative grid h-12 w-12 place-items-center rounded-[18px] border border-[#4b2a53]/20 bg-white text-sm font-semibold tracking-[0.32em] text-[#4b2a53] shadow-[0_10px_24px_rgba(75,42,83,0.2)]">
-              <span
-                aria-hidden="true"
-                className="absolute inset-1 rounded-[14px] border border-[#4b2a53]/30"
-              />
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 rounded-[18px] bg-[conic-gradient(from_90deg,transparent,rgba(75,42,83,0.35),transparent)] animate-[spin_6s_linear_infinite]"
-              />
+              <span className="absolute inset-1 rounded-[14px] border border-[#4b2a53]/30" />
+              <span className="absolute inset-0 rounded-[18px] bg-[conic-gradient(from_90deg,transparent,rgba(75,42,83,0.35),transparent)] animate-[spin_6s_linear_infinite]" />
               <span className="relative ml-[6px]">{logoText}</span>
             </div>
 
@@ -80,7 +77,7 @@ const navigate=useNavigate();
             </div>
           </div>
 
-          {/* SEARCH COMPONENT */}
+          {/* SEARCH */}
           <SearchBar />
 
           {/* ACTIONS */}
@@ -108,11 +105,7 @@ const navigate=useNavigate();
               </svg>
             </button>
 
-            <button
-              type="button"
-              className="flex items-center gap-2"
-              aria-label="Cart"
-            >
+            <button type="button" aria-label="Cart">
               <svg
                 className="h-5 w-5 text-[#2f1d17]"
                 viewBox="0 0 24 24"
@@ -123,28 +116,33 @@ const navigate=useNavigate();
                 <path d="M9 8V6a3 3 0 0 1 6 0v2" />
               </svg>
             </button>
-            <button
-              type="button"
-              className="flex items-center gap-2"
-              onClick={()=>navigate("/auth")}
-              
-            >
-            Login
+
+            <button type="button" onClick={() => navigate("/auth")}>
+              Login
             </button>
           </div>
         </div>
 
-        {/* NAVIGATION */}
         <nav className="flex flex-wrap items-center justify-center gap-12 text-[13px] font-semibold uppercase tracking-[0.35em] text-[#3a293f]">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="transition hover:text-[#4b2a53]"
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.href.startsWith("/") ? (
+              <button
+                key={item.label}
+                onClick={() => navigate(item.href)}
+                className="transition hover:text-[#4b2a53]"
+              >
+                {item.label}
+              </button>
+            ) : (
+              <a
+                key={item.label}
+                href={item.href}
+                className="transition hover:text-[#4b2a53]"
+              >
+                {item.label}
+              </a>
+            ),
+          )}
         </nav>
       </div>
     </header>
