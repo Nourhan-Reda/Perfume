@@ -10,21 +10,18 @@ const VISUAL_MOODS: MoodSlide[] = [
   {
     id: "01",
     label: "THE EMBRACE",
-    // Scene: Lady inhaling scent, soft focus portrait
     image:
       "https://i.pinimg.com/1200x/a8/fb/49/a8fb49db48e4397a7c416ef77e9ea45e.jpg",
   },
   {
     id: "02",
     label: "THE BLOOM",
-    // Scene: Close up of water-dewed rose petals in hand
     image:
       "https://i.pinimg.com/736x/02/25/66/02256666f134302d4193d2e20d39c604.jpg",
   },
   {
     id: "03",
     label: "THE RUSH",
-    // Scene: Luxury movement, silk blur, golden light
     image:
       "https://i.pinimg.com/1200x/44/a9/4f/44a94f41c295d737a038814039ed4357.jpg",
   },
@@ -56,7 +53,7 @@ export default function ProfessionalWideCarousel() {
   return (
     <div
       style={{
-        width: "100vw",
+        width: "100%", 
         height: "85vh",
         backgroundColor: "#fff",
         position: "relative",
@@ -65,7 +62,7 @@ export default function ProfessionalWideCarousel() {
         alignItems: "center",
       }}
     >
-      {/* 💎 MAIN IMAGE STAGE */}
+      {/* MAIN IMAGE STAGE */}
       <div
         style={{
           width: "100%",
@@ -81,14 +78,13 @@ export default function ProfessionalWideCarousel() {
             backgroundImage: `url(${VISUAL_MOODS[idx].image})`,
             backgroundSize: "cover",
             backgroundPosition: "center 30%",
-            // Slow zoom effect for "Life"
             transform: animating ? "scale(1.08)" : "scale(1.02)",
             opacity: animating ? 0.8 : 1,
             transition: "transform 1.5s ease-out, opacity 0.8s ease-in-out",
           }}
         />
 
-        {/* 💎 ELEGANT GRADIENT OVERLAY (For scannability) */}
+        {/* GRADIENT OVERLAY */}
         <div
           style={{
             position: "absolute",
@@ -100,7 +96,7 @@ export default function ProfessionalWideCarousel() {
         />
       </div>
 
-      {/* 💎 OVERLAY LABEL (MINIMALIST) */}
+      {/* OVERLAY LABEL */}
       <div
         style={{
           position: "absolute",
@@ -124,7 +120,7 @@ export default function ProfessionalWideCarousel() {
         </span>
       </div>
 
-      {/* 💎 PROFESSIONAL FLOATING CONTROLS */}
+      {/* FLOATING CONTROLS */}
       <div
         style={{
           position: "absolute",
@@ -138,7 +134,6 @@ export default function ProfessionalWideCarousel() {
           zIndex: 3,
         }}
       >
-        {/* Navigation Arrows */}
         <button
           onClick={() =>
             move((idx - 1 + VISUAL_MOODS.length) % VISUAL_MOODS.length)
@@ -148,7 +143,6 @@ export default function ProfessionalWideCarousel() {
           PREV
         </button>
 
-        {/* Progress Dots */}
         <div style={{ display: "flex", gap: "12px" }}>
           {VISUAL_MOODS.map((_, i) => (
             <div
@@ -174,7 +168,7 @@ export default function ProfessionalWideCarousel() {
         </button>
       </div>
 
-      {/* 💎 VERTICAL LINE DETAIL (Luxury Touch) */}
+      {/* VERTICAL LINE DETAIL */}
       <div
         style={{
           position: "absolute",

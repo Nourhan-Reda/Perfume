@@ -6,7 +6,7 @@ import CartDrawer from "./modules/customer/components/cart/CartDrawer";
 
 const App = () => {
   return (
-    <>
+ <div className="overflow-x-hidden w-full">
       <Navbar />
       <CartDrawer />
       <main>
@@ -14,7 +14,7 @@ const App = () => {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 };
 
