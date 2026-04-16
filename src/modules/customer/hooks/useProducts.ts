@@ -21,5 +21,32 @@ export function useProducts() {
       });
   }, []);
 
-  return { products, loading, error };
+const updateStock = async (productId: string, quantity: number) => {
+  const product = products.find((p) => p.id === productId);
+
+  if (!product) {
+    setError("Product not found");
+    return;
+  }
+
+  // ❗ حماية من negative stock
+  const newStock = product.stock - quantity;
+
+  const updatedProduct = {
+    ...product,
+    stock: newStock < 0 ? 0 : newStock,
+  };
+
+  try {
+    await api.put(`/Perfume/${productId}`, updatedProduct);
+
+    setProducts((prev) =>
+      prev.map((p) => (p.id === productId ? updatedProduct : p))
+    );
+  } catch {
+    setError("Failed to update stock");
+  }
+};
+
+  return { products, loading, error, updateStock };
 }

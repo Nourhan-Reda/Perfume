@@ -1,8 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-// 1. Import the Toaster from sonner
 import { Toaster } from "sonner";
 
 import "./index.css";
@@ -10,10 +8,11 @@ import App from "./App.tsx";
 
 import { HomePage } from "./modules/customer/pages/HomePage.tsx";
 import AuthLayout from "./modules/customer/pages/AuthLayout.tsx";
-
 import Blog from "./modules/customer/pages/Blog";
 import { CartProvider } from "./store/CartProvider.tsx";
 import AllCollections from "./modules/customer/pages/AllCollections.tsx";
+import ProductDetails from "./modules/customer/pages/ProductDetails.tsx";
+import Checkout from "./modules/customer/pages/Checkout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -24,16 +23,24 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-        {
-      path: "collections",
-      element: <AllCollections />,
-    },
-  ],
-},
-{
-  path: "blog",
-  element: <Blog />,
-},
+      {
+        path: "collections",
+        element: <AllCollections />,
+      },
+      {
+        path: "product/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path:"checkout",
+        element:<Checkout/>
+      }
+    ],
+  },
+  {
+    path: "blog",
+    element: <Blog />,
+  },
   {
     path: "auth",
     element: <AuthLayout />,
@@ -43,17 +50,16 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <CartProvider>
-      {/* 2. Add the Toaster with luxury configuration */}
       <Toaster
         position="top-right"
         expand={false}
-        richColors={false} // Keeping it minimal/luxury
+        richColors={false}
         toastOptions={{
           style: {
             background: "#ffffff",
             color: "#2f1d17",
             border: "1px solid #e7dfe9",
-            borderRadius: "0px", // Sharp edges for a high-end feel
+            borderRadius: "0px",
             padding: "16px",
             fontSize: "12px",
             letterSpacing: "0.1em",
@@ -63,5 +69,5 @@ createRoot(document.getElementById("root")!).render(
       />
       <RouterProvider router={router} />
     </CartProvider>
-  </StrictMode>,
+  </StrictMode>
 );

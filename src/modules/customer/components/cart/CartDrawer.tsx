@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../../../store/cart";
 import { X, Plus, Minus, ShoppingBag } from "lucide-react";
 
@@ -10,7 +11,7 @@ export default function CartDrawer() {
     decreaseQty,
     totalPrice,
   } = useCart();
-
+const navigate=useNavigate();
   return (
     <>
       {/* Overlay */}
@@ -127,7 +128,7 @@ export default function CartDrawer() {
                   ${totalPrice.toFixed(2)}
                 </span>
               </div>
-              <button className="w-full bg-[#4b2a53] text-white py-4 text-[10px] uppercase tracking-[0.3em] hover:bg-[#3a2141] transition-colors duration-300">
+              <button onClick={()=>navigate("/checkout")}     className="w-full bg-[#4b2a53] text-white py-4 text-[10px] uppercase tracking-[0.3em] hover:bg-[#3a2141] transition-colors duration-300">
                 Checkout
               </button>
               <button
