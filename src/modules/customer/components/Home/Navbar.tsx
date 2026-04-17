@@ -32,7 +32,7 @@ export default function Navbar({
   const navigate = useNavigate();
   // 2. CONSUME the wishlist count
   const { wishlistCount } = useWishlist();
-
+  const isLoggedIn = !!sessionStorage.getItem("vyra_user");
   return (
     <header className="w-full bg-white shadow-[0_12px_30px_rgba(24,16,32,0.08)]">
       {/* TOP BAR */}
@@ -162,13 +162,19 @@ export default function Navbar({
                 </span>
               )}
             </button>
-
             <button
               type="button"
-              onClick={() => navigate("/auth")}
+              onClick={() => {
+                if (isLoggedIn) {
+                  sessionStorage.removeItem("vyra_user");
+                  navigate("/");
+                } else {
+                  navigate("/auth");
+                }
+              }}
               className="ml-2 rounded-full border border-[#4b2a53]/20 px-6 py-2 text-[11px] font-bold uppercase tracking-widest transition-all hover:bg-[#4b2a53] hover:text-white"
             >
-              Login
+              {isLoggedIn ? "Logout" : "Login"}
             </button>
           </div>
         </div>

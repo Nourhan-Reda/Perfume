@@ -16,6 +16,7 @@ import CartPage from "./modules/customer/pages/CartPage.tsx";
 import WishlistPage from "./modules/customer/pages/WishlistPage.tsx";
 import ProductDetails from "./modules/customer/pages/ProductDetails.tsx";
 import Checkout from "./modules/customer/pages/Checkout.tsx";
+import ProtectedRoute from "./protected/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,8 @@ const router = createBrowserRouter([
       },
       {
         path: "checkout",
-        element: <Checkout />,
+        element:
+          (<ProtectedRoute><Checkout /></ProtectedRoute>),
       },
       {
         path: "cart",

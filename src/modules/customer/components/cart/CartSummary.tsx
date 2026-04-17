@@ -1,8 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../../../store/cart";
 
 export default function CartSummary() {
   const { totalPrice, clearCart } = useCart();
-
+const navigate=useNavigate();
   return (
     <div className="bg-[#fcfaff] p-6 rounded-xl border border-[#e7dfe9] sticky top-24">
       <h3 className="text-lg uppercase tracking-[0.1em] mb-6">Order Summary</h3>
@@ -27,7 +28,7 @@ export default function CartSummary() {
         <span className="text-xl font-bold">${totalPrice.toFixed(2)}</span>
       </div>
 
-      <button className="w-full bg-[#4b2a53] text-white py-4 rounded-lg uppercase tracking-[0.2em] text-xs hover:bg-[#361e3d] transition shadow-lg">
+      <button onClick={()=>navigate("/checkout")} className="w-full bg-[#4b2a53] text-white py-4 rounded-lg uppercase tracking-[0.2em] text-xs hover:bg-[#361e3d] transition shadow-lg">
         Proceed to Checkout
       </button>
 

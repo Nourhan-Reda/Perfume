@@ -32,7 +32,7 @@ export default function Checkout() {
             setDrawerOpen(false);
 
             toast.success("Order placed successfully 🎉");
-        } catch (error) {
+        } catch {
             toast.error("Checkout failed, please try again");
         }
     };
