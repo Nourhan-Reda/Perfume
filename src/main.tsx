@@ -8,13 +8,14 @@ import App from "./App.tsx";
 
 import { HomePage } from "./modules/customer/pages/HomePage.tsx";
 import AuthLayout from "./modules/customer/pages/AuthLayout.tsx";
-
 import Blog from "./modules/customer/pages/Blog";
 import { CartProvider } from "./store/CartProvider.tsx";
 import { WishlistProvider } from "./store/WishlistProvider.tsx";
 import AllCollections from "./modules/customer/pages/AllCollections.tsx";
 import CartPage from "./modules/customer/pages/CartPage.tsx";
 import WishlistPage from "./modules/customer/pages/WishlistPage.tsx";
+import ProductDetails from "./modules/customer/pages/ProductDetails.tsx";
+import Checkout from "./modules/customer/pages/Checkout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,22 @@ const router = createBrowserRouter([
         path: "collections",
         element: <AllCollections />,
       },
+      {
+        path: "product/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "cart",
+        element: <CartPage />,
+      },
+      {
+        path: "wishlist",
+        element: <WishlistPage />,
+      },
     ],
   },
   {
@@ -38,14 +55,6 @@ const router = createBrowserRouter([
   {
     path: "auth",
     element: <AuthLayout />,
-  },
-  {
-    path: "cart",
-    element: <CartPage />,
-  },
-  {
-    path: "wishlist",
-    element: <WishlistPage />,
   },
 ]);
 
