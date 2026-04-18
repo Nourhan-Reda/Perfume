@@ -17,6 +17,7 @@ import WishlistPage from "./modules/customer/pages/WishlistPage.tsx";
 import ProductDetails from "./modules/customer/pages/ProductDetails.tsx";
 import Checkout from "./modules/customer/pages/Checkout.tsx";
 import ProtectedRoute from "./protected/ProtectedRoute.tsx";
+import ProfilePage from "./modules/customer/pages/Profile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
       {
         path: "wishlist",
         element: <WishlistPage />,
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

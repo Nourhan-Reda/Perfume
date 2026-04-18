@@ -90,7 +90,10 @@ export default function Navbar({
             <button
               type="button"
               aria-label="My account"
-              onClick={() => navigate("/profile")}
+              onClick={() => {
+                const user = sessionStorage.getItem("vyra_user");
+                navigate(user ? "/profile" : "/auth");
+              }}
               className="transition-transform hover:scale-110 active:scale-95"
             >
               <svg

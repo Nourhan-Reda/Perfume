@@ -5,7 +5,6 @@ import type { StoredUser } from "../utils/session";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-// Re-export so callers can import the user shape from here if they prefer
 export type { StoredUser };
 
 interface UseAuthOptions {
