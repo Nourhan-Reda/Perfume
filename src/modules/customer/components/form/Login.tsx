@@ -7,9 +7,9 @@ import InputField from "./InputField";
 import type { LoginFormValues } from "../../types/Auth";
 import { loginSchema } from "../../types/Auth";
 import { saveUserSession } from "../../utils/session";
-import type { StoredUser } from "../../utils/session";
+// import type { StoredUser } from "../../utils/session";
 
-
+import { loginUser } from "../../../../services/authApi";
 
 const fadeUp = (delay: number): React.CSSProperties => ({
   animation: `vyra-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms both`,
@@ -39,29 +39,33 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
     defaultValues: { email: "", password: "", rememberMe: false },
   });
 
-  const onSubmit = async (data: LoginFormValues): Promise<void> => {
-    setIsSubmitting(true);
-    setAuthError("");
-    try {
-      // ── MOCK — replace with your real API call ────────────────────────────
-      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
 
-      const user: StoredUser = {
-        email: data.email,
-        fullName: "VYRA Member",
-        loginAt: new Date().toISOString(),
-      };
-      // ─────────────────────────────────────────────────────────────────────
 
-      saveUserSession(user);
-      onSuccess?.();
-      navigate("/");
-    } catch {
+const onSubmit = async (data: LoginFormValues): Promise<void> => {
+  setIsSubmitting(true);
+  setAuthError("");
+  try {
+    const user = await loginUser(data.email, data.password);
+
+    saveUserSession({
+      email: user.email,
+      fullName: user.fullName,
+      phone: user.phone,
+      loginAt: new Date().toISOString(),
+    });
+
+    onSuccess?.();
+    navigate("/");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      setAuthError(err.message); // "Invalid email or password"
+    } else {
       setAuthError("Something went wrong. Please try again.");
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="w-full">

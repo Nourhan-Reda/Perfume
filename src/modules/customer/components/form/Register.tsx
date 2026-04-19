@@ -7,9 +7,9 @@ import InputField from "./InputField";
 import type { RegisterFormValues } from "../../types/Auth";
 import { registerSchema } from "../../types/Auth";
 import { saveUserSession } from "../../utils/session";
-import type { StoredUser } from "../../utils/session";
+// import type { StoredUser } from "../../utils/session";
 
-
+import { registerUser } from "../../../../services/authApi";
 const fadeUp = (delay: number): React.CSSProperties => ({
   animation: `vyra-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms both`,
 });
@@ -46,29 +46,34 @@ const Register: React.FC<RegisterProps> = ({ onSuccess }) => {
     },
   });
 
-  const onSubmit = async (data: RegisterFormValues): Promise<void> => {
-    setIsSubmitting(true);
-    setAuthError("");
-    try {
-      // ── MOCK — replace with your real API call ────────────────────────────
-      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
 
-      const user: StoredUser = {
-        email: data.email,
-        fullName: data.fullName,
-        phone: data.phone ?? undefined,
-        registeredAt: new Date().toISOString(),
-      };
 
-      saveUserSession(user);
-      onSuccess?.();
-      navigate("/");
-    } catch {
-      setAuthError("Registration failed. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+const onSubmit = async (data: RegisterFormValues): Promise<void> => {
+  setIsSubmitting(true);
+  setAuthError("");
+  try {
+    const newUser = await registerUser({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone ?? "",
+      password: data.password,
+    });
+
+    saveUserSession({
+      email: newUser.email,
+      fullName: newUser.fullName,
+      phone: newUser.phone,
+      registeredAt: newUser.registeredAt,
+    });
+
+    onSuccess?.();
+    navigate("/");
+  } catch {
+    setAuthError("Registration failed. Please try again.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="w-full">

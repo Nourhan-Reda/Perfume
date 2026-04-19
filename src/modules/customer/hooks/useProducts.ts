@@ -9,9 +9,10 @@ export function useProducts() {
 
   useEffect(() => {
     api
-      .get<Product[]>("/Perfume")
+      .get<Product[]>("")
       .then((res) => {
-        setProducts(res.data);
+        const filtered = res.data.filter((item: Product) => item.type === "product");
+        setProducts(filtered);
       })
       .catch(() => {
         setError("Something went wrong");
@@ -21,32 +22,31 @@ export function useProducts() {
       });
   }, []);
 
-const updateStock = async (productId: string, quantity: number) => {
-  const product = products.find((p) => p.id === productId);
+  const updateStock = async (productId: string, quantity: number) => {
+    const product = products.find((p) => p.id === productId);
 
-  if (!product) {
-    setError("Product not found");
-    return;
-  }
+    if (!product) {
+      setError("Product not found");
+      return;
+    }
 
-  // ❗ حماية من negative stock
-  const newStock = product.stock - quantity;
+    const newStock = product.stock - quantity;
 
-  const updatedProduct = {
-    ...product,
-    stock: newStock < 0 ? 0 : newStock,
+    const updatedProduct = {
+      ...product,
+      stock: newStock < 0 ? 0 : newStock,
+    };
+
+    try {
+      await api.put(`/${productId}`, updatedProduct);
+
+      setProducts((prev) =>
+        prev.map((p) => (p.id === productId ? updatedProduct : p))
+      );
+    } catch {
+      setError("Failed to update stock");
+    }
   };
-
-  try {
-    await api.put(`/Perfume/${productId}`, updatedProduct);
-
-    setProducts((prev) =>
-      prev.map((p) => (p.id === productId ? updatedProduct : p))
-    );
-  } catch {
-    setError("Failed to update stock");
-  }
-};
 
   return { products, loading, error, updateStock };
 }
