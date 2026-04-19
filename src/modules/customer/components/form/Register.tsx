@@ -60,6 +60,7 @@ const onSubmit = async (data: RegisterFormValues): Promise<void> => {
     });
 
     saveUserSession({
+      id:newUser.id,
       email: newUser.email,
       fullName: newUser.fullName,
       phone: newUser.phone,

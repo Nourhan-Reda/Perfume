@@ -1,7 +1,9 @@
 import { Mail, CalendarDays, BadgeCheck, Pencil, User } from "lucide-react";
 import InfoRow from "../components/Profile/InfoRow";
 import type { InfoRowProps } from "../types/profile";
-
+import { useState } from "react";
+import EditProfileModal from "../components/Profile/EditProfileModal";
+import { useEditProfile } from "../hooks/useEditProfile";
 
 const keyframes = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Outfit:wght@300;400;500&display=swap');
@@ -32,11 +34,19 @@ export default function ProfilePage() {
     { icon: <CalendarDays size={15} />, label: "Member Since", value: "April 2025" },
     { icon: <BadgeCheck size={15} />,   label: "Account Type", value: "Personal" },
   ];
+    const [isModalOpen, setIsModalOpen] = useState(false);      // ← أضف
+  const { handleSave } = useEditProfile(); 
 
   return (
     <>
       <style>{keyframes}</style>
-
+   <EditProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialName={name}
+        initialEmail={email}
+        onSave={handleSave}
+      />
       {/* ── Page background ─────────────────────────────────── */}
       <div
         className="min-h-screen flex items-center justify-center px-6 py-12"
@@ -216,6 +226,7 @@ export default function ProfilePage() {
               fontFamily: "'Outfit', sans-serif",
               animation: "fade-up 0.7s 0.35s cubic-bezier(.22,.68,0,1.2) both",
             }}
+              onClick={() => setIsModalOpen(true)}
           >
             <Pencil size={14} />
             Edit profile

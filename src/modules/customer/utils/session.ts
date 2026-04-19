@@ -6,6 +6,7 @@ export const SESSION_KEY = "vyra_user" as const;
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface StoredUser {
+  id:string|undefined;
   email: string;
   fullName: string;
   phone?: string;

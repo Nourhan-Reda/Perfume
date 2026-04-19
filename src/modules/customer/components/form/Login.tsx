@@ -48,6 +48,7 @@ const onSubmit = async (data: LoginFormValues): Promise<void> => {
     const user = await loginUser(data.email, data.password);
 
     saveUserSession({
+      id:user.id,
       email: user.email,
       fullName: user.fullName,
       phone: user.phone,
