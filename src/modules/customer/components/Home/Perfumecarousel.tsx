@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 
 type Product = {
@@ -44,6 +45,7 @@ const API_DATA: Product[] = [
 ];
 
 export default function PerfumeCarousel() {
+  const navigate = useNavigate();
   const items = API_DATA;
   const [idx, setIdx] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -248,6 +250,7 @@ export default function PerfumeCarousel() {
 
           <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
             <button
+              onClick={() => navigate("collections")}
               style={{
                 padding: "18px 48px",
                 backgroundColor: accent,

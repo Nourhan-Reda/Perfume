@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useWishlist } from "../../../../store/wishlist-context";
+import AuthDropdown from "./AuthDropdown";
 
 type NavItem = {
   label: string;
@@ -30,9 +32,12 @@ export default function Navbar({
   logoText = "V",
 }: NavbarProps) {
   const navigate = useNavigate();
-  // 2. CONSUME the wishlist count
   const { wishlistCount } = useWishlist();
   const isLoggedIn = !!sessionStorage.getItem("vyra_user");
+
+  // State to track if the dropdown should be visible
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
   return (
     <header className="w-full bg-white shadow-[0_12px_30px_rgba(24,16,32,0.08)]">
       {/* TOP BAR */}
@@ -86,32 +91,47 @@ export default function Navbar({
 
           {/* ACTIONS (Account, Wishlist, Cart) */}
           <div className="flex items-center gap-6 text-sm text-[#4b2a53] lg:justify-self-end">
-            {/* Account */}
-            <button
-              type="button"
-              aria-label="My account"
-              onClick={() => {
-                const user = sessionStorage.getItem("vyra_user");
-                navigate(user ? "/profile" : "/auth");
-              }}
-              className="transition-transform hover:scale-110 active:scale-95"
+            {/* Account Icon + Hover Logic */}
+            <div
+              className="relative py-2"
+              onMouseEnter={() => !isLoggedIn && setIsAuthOpen(true)}
+              onMouseLeave={() => setIsAuthOpen(false)}
             >
-              <svg
-                className="h-6 w-6 text-[#2f1d17]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                />
-              </svg>
-            </button>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 w-[150%] h-8 bg-transparent" />
 
-            {/* 3. UPDATED Wishlist Button with Navigation and Badge */}
+              <button
+                type="button"
+                aria-label="My account"
+                onClick={() => {
+                  const user = sessionStorage.getItem("vyra_user");
+                  navigate(user ? "/profile" : "/auth");
+                }}
+                className="relative z-[60] transition-transform hover:scale-110 active:scale-95"
+              >
+                <svg
+                  className="h-6 w-6 text-[#2f1d17]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                  />
+                </svg>
+              </button>
+
+              {/* AUTH DROPDOWN */}
+              {isAuthOpen && !isLoggedIn && (
+                <div className="absolute top-[110%] right-[-60px] z-[100]">
+                  <AuthDropdown />
+                </div>
+              )}
+            </div>
+
+            {/* Wishlist Button */}
             <button
               type="button"
               aria-label="Wishlist"
@@ -131,7 +151,6 @@ export default function Navbar({
                   d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                 />
               </svg>
-              {/* Dynamic Badge for Wishlist */}
               {wishlistCount > 0 && (
                 <span className="absolute -right-2 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#4b2a53] text-[10px] font-bold text-white ring-2 ring-white">
                   {wishlistCount}
@@ -139,7 +158,7 @@ export default function Navbar({
               )}
             </button>
 
-            {/* Cart with dynamic Badge */}
+            {/* Cart Button */}
             <button
               type="button"
               aria-label="Cart"
@@ -165,6 +184,8 @@ export default function Navbar({
                 </span>
               )}
             </button>
+
+            {/* Login Toggle */}
             <button
               type="button"
               onClick={() => {
