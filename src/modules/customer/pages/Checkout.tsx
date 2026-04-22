@@ -22,9 +22,17 @@ export default function Checkout() {
         0
     );
 
+    // check unavailable items
+    const hasOutOfStockItems = cart.some((item) => (item.stock ?? 0) < item.quantity);
+
     const handleCheckout = async () => {
         if (cart.length === 0) {
             toast.error("Your cart is empty");
+            return;
+        }
+
+        if (hasOutOfStockItems) {
+            toast.error("Some items are out of stock");
             return;
         }
 
@@ -59,13 +67,11 @@ export default function Checkout() {
                 {/* LEFT SIDE */}
                 <div className="md:col-span-2">
 
-                    {/* CUSTOMER FORM */}
                     <CheckoutForm
                         formData={formData}
                         setFormData={setFormData}
                     />
 
-                    {/* CART ITEMS */}
                     <div className="bg-white rounded-2xl shadow-sm p-6">
                         <h2 className="text-2xl font-semibold text-[#2f1d17] mb-6">
                             Checkout
@@ -77,34 +83,44 @@ export default function Checkout() {
                             </p>
                         ) : (
                             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-                                {cart.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="flex items-center justify-between border-b pb-4"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <img
-                                                src={item.image}
-                                                alt={item.name}
-                                                className="w-16 h-16 object-cover rounded-lg bg-[#f9f5fb]"
-                                            />
+                                {cart.map((item) => {
+                                    const isUnavailable = (item.stock ?? 0) < item.quantity;
 
-                                            <div>
-                                                <h3 className="font-medium text-[#2f1d17]">
-                                                    {item.name}
-                                                </h3>
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className="flex items-center justify-between border-b pb-4"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.name}
+                                                    className="w-16 h-16 object-cover rounded-lg bg-[#f9f5fb]"
+                                                />
 
-                                                <p className="text-sm text-gray-500">
-                                                    Quantity: {item.quantity}
-                                                </p>
+                                                <div>
+                                                    <h3 className="font-medium text-[#2f1d17]">
+                                                        {item.name}
+                                                    </h3>
+
+                                                    <p className="text-sm text-gray-500">
+                                                        Quantity: {item.quantity}
+                                                    </p>
+
+                                                    {isUnavailable && (
+                                                        <p className="text-sm text-red-500 font-medium">
+                                                            Out of stock
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <p className="font-semibold text-[#4b2a53]">
-                                            ${(item.price * item.quantity).toFixed(2)}
-                                        </p>
-                                    </div>
-                                ))}
+                                            <p className="font-semibold text-[#4b2a53]">
+                                                ${(item.price * item.quantity).toFixed(2)}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
@@ -125,14 +141,14 @@ export default function Checkout() {
 
                     <button
                         onClick={handleCheckout}
-                        disabled={cart.length === 0}
+                        disabled={cart.length === 0 || hasOutOfStockItems}
                         className={`w-full py-3 rounded-full font-semibold transition
-                        ${cart.length === 0
+            ${cart.length === 0 || hasOutOfStockItems
                                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                                 : "bg-[#4b2a53] text-white hover:bg-[#3a2040]"
                             }`}
                     >
-                        Place Order
+                        {hasOutOfStockItems ? "Some Items Are Out of Stock" : "Place Order"}
                     </button>
                 </div>
             </div>

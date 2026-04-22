@@ -19,6 +19,7 @@ import Checkout from "./modules/customer/pages/Checkout.tsx";
 import ProtectedRoute from "./protected/ProtectedRoute.tsx";
 import ProfilePage from "./modules/customer/pages/Profile.tsx";
 import ChatBot from "./modules/customer/components/Home/ChatBot.tsx";
+import AuthRoute from "./protected/AuthGuard.tsx";
 
 const router = createBrowserRouter([
   {
@@ -69,7 +70,7 @@ const router = createBrowserRouter([
   },
   {
     path: "auth",
-    element: <AuthLayout />,
+    element:(<AuthRoute><AuthLayout /></AuthRoute>) ,
   },
   {
     path: "chatbot",

@@ -52,7 +52,7 @@ export default function AllCollections() {
         <input
           type="range"
           min="0"
-          max="200"
+          max="800"
           step="10"
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}

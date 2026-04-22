@@ -18,6 +18,7 @@ type NavbarProps = {
 };
 
 const DEFAULT_ITEMS: NavItem[] = [
+  { label: "Home", href: "/" },
   { label: "Men", href: "/collections" },
   { label: "Women", href: "/collections" },
   { label: "Children", href: "/collections" },
