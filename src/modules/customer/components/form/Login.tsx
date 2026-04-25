@@ -40,26 +40,32 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
   });
 
 
-
 const onSubmit = async (data: LoginFormValues): Promise<void> => {
   setIsSubmitting(true);
   setAuthError("");
+
   try {
     const user = await loginUser(data.email, data.password);
 
     saveUserSession({
-      id:user.id,
+      id: user.id,
       email: user.email,
       fullName: user.fullName,
       phone: user.phone,
+      role: user.role,
       loginAt: new Date().toISOString(),
     });
 
     onSuccess?.();
-    navigate("/");
+
+    if (user.role === "admin") {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
   } catch (err: unknown) {
     if (err instanceof Error) {
-      setAuthError(err.message); // "Invalid email or password"
+      setAuthError(err.message);
     } else {
       setAuthError("Something went wrong. Please try again.");
     }

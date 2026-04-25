@@ -5,11 +5,17 @@ type Props = {
 };
 
 export default function AuthRoute({ children }: Props) {
-  const user = sessionStorage.getItem("vyra_user");
+  const storedUser = sessionStorage.getItem("vyra_user");
 
-  if (user) {
-    return <Navigate to="/" replace />;
+  if (!storedUser) {
+    return children;
   }
 
-  return children;
+  const user = JSON.parse(storedUser);
+
+  if (user.role === "admin") {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Navigate to="/" replace />;
 }

@@ -12,6 +12,7 @@ export interface StoredUser {
   phone?: string;
   loginAt?: string;
   registeredAt?: string;
+  role: "admin" | "user";
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

@@ -10,29 +10,28 @@ export interface ApiUser {
   email: string;
   phone?: string;
   password: string;
+  role: "admin" | "user";
   registeredAt?: string;
 }
 
-// ─── Get all users ─────────────────────────────
 export const getUsers = async (): Promise<ApiUser[]> => {
   const response = await axios.get(BASE_URL);
   return response.data.filter((item: ApiUser) => item.type === "user");
 };
 
-// ─── Register ─────────────────────────────
 export const registerUser = async (
   user: ApiUser
 ): Promise<ApiUser> => {
   const response = await axios.post(BASE_URL, {
     ...user,
     type: "user",
+    role: user.role || "user",
     registeredAt: new Date().toISOString(),
   });
 
   return response.data;
 };
 
-// ─── Login check ─────────────────────────────
 export const loginUser = async (
   email: string,
   password: string

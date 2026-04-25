@@ -57,6 +57,7 @@ const onSubmit = async (data: RegisterFormValues): Promise<void> => {
       email: data.email,
       phone: data.phone ?? "",
       password: data.password,
+        role: "user",
     });
 
     saveUserSession({
@@ -64,6 +65,7 @@ const onSubmit = async (data: RegisterFormValues): Promise<void> => {
       email: newUser.email,
       fullName: newUser.fullName,
       phone: newUser.phone,
+        role: newUser.role,
       registeredAt: newUser.registeredAt,
     });
 

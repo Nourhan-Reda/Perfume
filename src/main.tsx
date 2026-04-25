@@ -25,11 +25,18 @@ import Overview from "./modules/admin/pages/Overview.tsx";
 import Inventory from "./modules/admin/pages/Inventory.tsx";
 import Categories from "./modules/admin/pages/Categories.tsx";
 import StockSales from "./modules/admin/pages/StockSales.tsx";
+import AdminProtectedRoute from "./protected/AdminProtectedRoute.tsx";
+import { Dashboard } from "./modules/admin/pages/Dashboard.tsx";
+import UserRoute from "./protected/UserRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <UserRoute>
+        <App />
+      </UserRoute>
+    ),
     children: [
       {
         index: true,
@@ -100,6 +107,14 @@ const router = createBrowserRouter([
       { path: "categories", element: <Categories /> },
       { path: "stats", element: <StockSales /> }, // Add this line
     ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <AdminProtectedRoute>
+        <Dashboard />
+      </AdminProtectedRoute>
+    ),
   },
 ]);
 
