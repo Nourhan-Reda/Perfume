@@ -20,6 +20,11 @@ import ProtectedRoute from "./protected/ProtectedRoute.tsx";
 import ProfilePage from "./modules/customer/pages/Profile.tsx";
 import ChatBot from "./modules/customer/components/Home/ChatBot.tsx";
 import AuthRoute from "./protected/AuthGuard.tsx";
+import AdminLayout from "./modules/admin/pages/AdminLayout.tsx";
+import Overview from "./modules/admin/pages/Overview.tsx";
+import Inventory from "./modules/admin/pages/Inventory.tsx";
+import Categories from "./modules/admin/pages/Categories.tsx";
+import StockSales from "./modules/admin/pages/StockSales.tsx";
 
 const router = createBrowserRouter([
   {
@@ -70,11 +75,31 @@ const router = createBrowserRouter([
   },
   {
     path: "auth",
-    element:(<AuthRoute><AuthLayout /></AuthRoute>) ,
+    element: (
+      <AuthRoute>
+        <AuthLayout />
+      </AuthRoute>
+    ),
   },
   {
     path: "chatbot",
     element: <ChatBot />,
+  },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true, // This makes Overview the default page for /admin
+        element: <Overview />,
+      },
+      {
+        path: "inventory", // This matches /admin/inventory
+        element: <Inventory />,
+      },
+      { path: "categories", element: <Categories /> },
+      { path: "stats", element: <StockSales /> }, // Add this line
+    ],
   },
 ]);
 
