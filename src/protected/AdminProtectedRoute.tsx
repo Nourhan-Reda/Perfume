@@ -5,14 +5,16 @@ interface Props {
 }
 
 const AdminProtectedRoute = ({ children }: Props) => {
-  const user = JSON.parse(sessionStorage.getItem("user") || "null");
+  const storedUser = sessionStorage.getItem("vyra_user");
 
-  if (!user) {
-    return <Navigate to="/auth" />;
+  if (!storedUser) {
+    return <Navigate to="/auth" replace />;
   }
 
+  const user = JSON.parse(storedUser);
+
   if (user.role !== "admin") {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

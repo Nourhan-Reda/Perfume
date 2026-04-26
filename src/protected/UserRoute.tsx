@@ -14,7 +14,7 @@ export default function UserRoute({ children }: Props) {
     const user = JSON.parse(storedUser);
 
     if (user.role === "admin") {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/admin" replace />;
     }
 
     return children;

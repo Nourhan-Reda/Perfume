@@ -26,7 +26,6 @@ import Inventory from "./modules/admin/pages/Inventory.tsx";
 import Categories from "./modules/admin/pages/Categories.tsx";
 import StockSales from "./modules/admin/pages/StockSales.tsx";
 import AdminProtectedRoute from "./protected/AdminProtectedRoute.tsx";
-import { Dashboard } from "./modules/admin/pages/Dashboard.tsx";
 import UserRoute from "./protected/UserRoute.tsx";
 import ConciergeLogs from "./modules/admin/components/ConciergeLogs.tsx";
 import Settings from "./modules/admin/pages/Settings.tsx";
@@ -96,7 +95,7 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <AdminLayout />,
+    element: (  <AdminProtectedRoute><AdminLayout /></AdminProtectedRoute>),
     children: [
       {
         index: true,
@@ -112,14 +111,14 @@ const router = createBrowserRouter([
       { path: "settings", element: <Settings /> },
     ],
   },
-  {
-    path: "dashboard",
-    element: (
-      <AdminProtectedRoute>
-        <Dashboard />
-      </AdminProtectedRoute>
-    ),
-  },
+  // {
+  //   path: "dashboard",
+  //   element: (
+  //     <AdminProtectedRoute>
+  //       <Dashboard />
+  //     </AdminProtectedRoute>
+  //   ),
+  // },
 ]);
 
 createRoot(document.getElementById("root")!).render(

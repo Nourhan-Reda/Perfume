@@ -59,7 +59,7 @@ const onSubmit = async (data: LoginFormValues): Promise<void> => {
     onSuccess?.();
 
     if (user.role === "admin") {
-      navigate("/dashboard");
+      navigate("/admin");
     } else {
       navigate("/");
     }
