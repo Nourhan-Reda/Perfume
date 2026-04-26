@@ -46,6 +46,7 @@ const SecuritySettings: React.FC<SecurityProps> = ({
             <input
               type="email"
               value={settings.adminEmail}
+      
               onChange={(e) =>
                 setSettings({ ...settings, adminEmail: e.target.value })
               }

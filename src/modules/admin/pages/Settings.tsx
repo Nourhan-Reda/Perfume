@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Shield, Bell, Globe, Save, Loader2 } from "lucide-react";
 import axios from "axios";
@@ -10,8 +11,8 @@ import AlertSettings from "../components/settings/AlertSettings";
 
 const API_URL = "https://690e4923bd0fefc30a040b18.mockapi.io/Perfume";
 
-// Shared interface to ensure consistency with children
 export interface SettingsState {
+  id?: string;
   houseName: string;
   currency: string;
   tone: string;
@@ -30,45 +31,65 @@ const Settings: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [settings, setSettings] = useState<SettingsState>({
-    houseName: "VYRA",
-    currency: "USD ($)",
-    tone: "Bespoke",
-    bio: "A luxury fragrance house dedicated to the art of olfactory storytelling.",
-    adminName: "Master Curator",
-    adminEmail: "curator@vyra.boutique",
-    adminPassword: "••••••••",
-    adminRole: "Lead Alchemist",
-    twoFactor: true,
+    houseName: "",
+    currency: "",
+    tone: "",
+    bio: "",
+    adminName: "",
+    adminEmail: "",
+    adminPassword: "",
+    adminRole: "",
+    twoFactor: false,
   });
 
-  useEffect(() => {
-    const syncAdminData = async () => {
-      try {
-        const response = await axios.get(API_URL);
-        if (response.data) {
-          setSettings((prev) => ({
-            ...prev,
-            houseName: "VYRA",
-            adminName: "Master Curator",
-          }));
-        }
-      } catch (error) {
-        // FIXED: Using the error variable professionally for debugging
-        console.error("Critical: Admin Sync Failure", error);
-      } finally {
-        setIsLoading(false);
+
+useEffect(() => {
+  const syncAdminData = async () => {
+    try {
+      const response = await axios.get(API_URL);
+
+      const data = response.data.find(
+        (item: any) => item.type === "settings"
+      );
+
+      if (data) {
+        setSettings({
+          id: data.id,
+          houseName: data.houseName || "",
+          currency: data.currency || "",
+          tone: data.tone || "",
+          bio: data.bio || "",
+          adminName: data.adminName || "",
+          adminEmail: data.adminEmail || "",
+          adminPassword: data.adminPassword || "",
+          adminRole: data.adminRole || "",
+          twoFactor: data.twoFactor || false,
+        });
       }
-    };
-    syncAdminData();
-  }, []);
+    } catch (error) {
+      console.error("Critical: Admin Sync Failure", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  syncAdminData();
+}, []);
+
+
 
   const handleSave = async () => {
+    if (!settings.id) {
+      toast.error("Settings ID not found.");
+      return;
+    }
+
     setIsSaving(true);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await axios.put(`${API_URL}/${settings.id}`, settings);
       toast.success("House records synchronized.");
     } catch (error) {
-      // FIXED: Using the error variable to log save failures
       console.error("Save Operation Failure:", error);
       toast.error("Failed to sync house settings.");
     } finally {
@@ -97,6 +118,7 @@ const Settings: React.FC = () => {
             Access Level: {settings.adminRole}
           </p>
         </div>
+
         <button
           onClick={handleSave}
           disabled={isSaving}
@@ -129,11 +151,10 @@ const Settings: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center space-x-4 px-5 py-4 rounded-2xl text-[11px] uppercase tracking-widest transition-all duration-300 ${
-                activeTab === tab.id
+              className={`w-full flex items-center space-x-4 px-5 py-4 rounded-2xl text-[11px] uppercase tracking-widest transition-all duration-300 ${activeTab === tab.id
                   ? "bg-black text-white shadow-lg shadow-black/20"
                   : "text-gray-400 hover:text-black hover:bg-gray-50"
-              }`}
+                }`}
             >
               {tab.icon}
               <span className="font-medium">{tab.label}</span>
@@ -145,6 +166,7 @@ const Settings: React.FC = () => {
           {activeTab === "brand" && (
             <BrandSettings settings={settings} setSettings={setSettings} />
           )}
+
           {activeTab === "security" && (
             <SecuritySettings
               settings={settings}
@@ -153,6 +175,7 @@ const Settings: React.FC = () => {
               setShowPassword={setShowPassword}
             />
           )}
+
           {activeTab === "notifications" && <AlertSettings />}
         </div>
       </div>
@@ -161,3 +184,4 @@ const Settings: React.FC = () => {
 };
 
 export default Settings;
+

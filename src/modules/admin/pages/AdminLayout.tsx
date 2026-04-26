@@ -52,12 +52,14 @@ const AdminLayout: React.FC = () => {
     menuItems.find((i) => i.path === location.pathname)?.name || "Dashboard";
 
   // Function to handle returning to the homepage
-  const handleExit = () => {
-    navigate("/");
-  };
 
+const handleExit = () => {
+  sessionStorage.removeItem("vyra_user");
+  navigate("/auth");
+};
   return (
-    <div className="flex min-h-screen bg-[#FDFDFD] font-sans">
+    <div className="flex min-h-scre
+    en bg-[#FDFDFD] font-sans">
       {/* SIDEBAR: Luxury Minimalist */}
       <aside className="w-64 bg-white border-r border-gray-100 flex flex-col sticky top-0 h-screen">
         <div className="p-8">
