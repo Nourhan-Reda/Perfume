@@ -8,18 +8,19 @@ export default function ProductGrid({ category }: { category: string }) {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("https://690e4923bd0fefc30a040b18.mockapi.io/Perfume")
-      .then((res) => res.json())
-      .then((data: Product[]) => {
-        const formatted: Product[] = data.map((item) => ({
-          id: item.id,
-          title: item.title ?? "Unknown Perfume",
-          description:item.description,
-          price: Number(item.price ?? 0),
-          image: item.image ?? "",
-          category: item.category ?? "other",
-          stock: Number(item.stock ?? 0),
-        }));
+fetch("https://690e4923bd0fefc30a040b18.mockapi.io/Perfume")
+       .then((res) => res.json())
+       .then((data: Product[]) => {
+         const formatted: Product[] = data.map((item) => ({
+           id: item.id,
+           title: item.title ?? "Unknown Perfume",
+           description: item.description,
+           price: Number(item.price ?? 0),
+           image: item.image ?? "",
+           category: item.category ?? "other",
+           stock: Number(item.stock ?? 0),
+           type: "product" as const,
+         }));
 
         const filtered = formatted.filter(
           (item) => item.category.toLowerCase() === category.toLowerCase()

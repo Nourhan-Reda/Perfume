@@ -25,16 +25,27 @@ export default function RecommendedForYou() {
           setProducts([]);
           return;
         }
+type ApiProduct = Omit<Product, "type">;
 
-        const formatted: Product[] = (data as Product[]).map((item) => ({
-          id: item.id,
-          title: item.title ?? "Unknown Perfume",
-          description:item.description??"unKnown",
-         price: Number(item.price ?? 0),
-          image: item.image ?? "",
-          category: (item.category ?? "other").toLowerCase().trim(),
-          stock: Number(item.stock ?? 0),
-        }));
+const formatted: Product[] = (data as ApiProduct[]).map((item) => {
+  const category = (item.category ?? "").toLowerCase().trim();
+
+  const validCategory: Product["category"] =
+    category === "women" || category === "men" || category === "children"
+      ? category
+      : "women";
+
+  return {
+    id: item.id,
+    title: item.title ?? "Unknown Perfume",
+    description: item.description ?? "Unknown",
+    price: Number(item.price ?? 0),
+    image: item.image ?? "",
+    category: validCategory,
+    stock: Number(item.stock ?? 0),
+    type: "product",
+  };
+});
 
         const women = formatted.filter((p) => p.category === "women");
         const men = formatted.filter((p) => p.category === "men");

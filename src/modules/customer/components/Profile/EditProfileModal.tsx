@@ -6,7 +6,7 @@ interface EditProfileModalProps {
   onClose: () => void;
   initialName: string;
   initialEmail: string;
-  onSave: (name: string, email: string, newPassword?: string) => Promise<void>;
+  onSave: (name: string, email: string, newPassword?: string, currentPassword?: string) => Promise<void>;
 }
 
 export default function EditProfileModal({

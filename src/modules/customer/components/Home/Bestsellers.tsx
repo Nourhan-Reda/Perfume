@@ -25,7 +25,9 @@ export default function Bestsellers() {
           return;
         }
 
-   const formatted: Product[] = (data as Product[]).map((item) => {
+ type ApiProduct = Omit<Product, "type">;
+
+const formatted: Product[] = (data as ApiProduct[]).map((item) => {
   const category = (item.category ?? "").toLowerCase().trim();
 
   const validCategory: Product["category"] =
@@ -41,6 +43,7 @@ export default function Bestsellers() {
     image: item.image ?? "",
     category: validCategory,
     stock: Number(item.stock ?? 0),
+    type: "product",
   };
 });
 
